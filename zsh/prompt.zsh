@@ -32,7 +32,7 @@ setopt PROMPT_SUBST
 # `char <c>` sets it. Same precedence as the accent: environment, then the
 # remembered choice, then the default.
 [[ -z $TE_PROMPT_CHAR && -r $TE_STATE_DIR/char ]] && TE_PROMPT_CHAR=$(<$TE_STATE_DIR/char)
-: ${TE_PROMPT_CHAR:=❯}
+: ${TE_PROMPT_CHAR:=›}
 # '%' is itself a prompt escape, so a literal one has to be doubled before it
 # reaches a PROMPT string — otherwise `char %` swallows the next character and
 # prints nothing. Doing it here covers all three sources: the environment, the

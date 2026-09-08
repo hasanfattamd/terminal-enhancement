@@ -13,14 +13,14 @@ new shell — and it is remembered for next time.
 
 ```
 ~/code/terminal-enhancement  main ●                              6.0s
-❯
+›
 ```
 
 **path** — where you are, then where you type. Nothing else.
 
 ```
 
-Desktop ❯
+Desktop ›
 ```
 
 Just the current directory's name, in bold, after a blank line — so each
@@ -33,8 +33,8 @@ switch between them rather than edit anything:
 
 | | |
 |---|---|
-| `bar` | `▍Desktop ❯` — a thin accent rule; identity without spending a line |
-| `dot` | `◆ Desktop ❯` — the same idea, more decorative |
+| `bar` | `▍Desktop ›` — a thin accent rule; identity without spending a line |
+| `dot` | `◆ Desktop ›` — the same idea, more decorative |
 | `indent` | whitespace only, no marks at all — the quietest of the set |
 | `pill` | the name in a single filled block |
 | `rule` | a dim divider the width of the window above each prompt |
@@ -44,12 +44,12 @@ look.
 
 ### Picking the prompt character
 
-`❯` is not fixed either. `char list` renders the candidates in place, in your
+The prompt character is not fixed. `char list` renders the candidates in place, in your
 own terminal and font, which is the only way to judge one:
 
 ```sh
 char list          # see them all
-char '›'           # lighter and thinner than the default
+char '❯'           # heavier than the default
 char '·'           # the quietest of them
 char '$'           # the shell classic
 ```
@@ -61,14 +61,14 @@ it and it is remembered. `char` on its own prints the current one.
 **compact** — one line, for narrow terminals and split panes.
 
 ```
-terminal-enhancement main ● ❯
+terminal-enhancement main ● ›
 ```
 
 **zen** — the quietest. Everything informational moves right, dimmed, and gets
 out of the way while you read output.
 
 ```
-❯                                    ~/code/terminal-enhancement main●
+›                                    ~/code/terminal-enhancement main●
 ```
 
 **classic** — the familiar bash shape, with git added and the noise removed.
@@ -82,7 +82,7 @@ right. The cap is drawn in each segment's own color, so it reads as the block
 tapering off rather than as a character sitting after it.
 
 ```
-▐ ~/code/terminal-enhancement ▶▐ main ● ▶ ❯
+▐ ~/code/terminal-enhancement ▶▐ main ● ▶ ›
 ```
 
 The seamless powerline arrow is U+E0B0, which only exists in patched fonts. So
@@ -102,7 +102,7 @@ between `1` and `127` is usually the whole diagnosis.
 
 ```
 14:32:07 ~/code/terminal-enhancement  main ● (venv) 2&
-127 ❯
+127 ›
 ```
 
 ### Picking a color
@@ -224,6 +224,6 @@ than on every shell, which is what usually makes zsh feel slow to start.
 
 ## Requirements
 
-zsh 5.3 or newer, and a font with a couple of common glyphs (`❯` and `●`) —
+zsh 5.3 or newer, and a font with a couple of common glyphs (`›` and `●`) —
 any modern terminal font has them. No Nerd Font, no patched font, no
 Powerline.

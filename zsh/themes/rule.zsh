@@ -19,7 +19,10 @@
 typeset -g _te_rule_cache='' _te_rule_width=0
 
 _te_rule() {
+  # COLUMNS can be 0 or unset when there is no tty attached, which would
+  # otherwise draw a zero-width rule and leave a stray blank line.
   local w=${COLUMNS:-80}
+  (( w < 1 )) && w=80
   if (( w != _te_rule_width )); then
     _te_rule_cache=''
     repeat $w _te_rule_cache+='─'
