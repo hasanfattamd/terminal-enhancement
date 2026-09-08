@@ -3,7 +3,7 @@
 A clean, minimal zsh setup. No frameworks, no plugin manager, no external
 binaries — just zsh's own features, so it starts fast and there is nothing to
 keep updated.
-## Six looks, switchable live
+## Seven looks, switchable live
 
 Run `theme preview` to see them all rendered with your own directory and
 branch, then `theme <name>` to switch. The change is instant — no reload, no
@@ -15,6 +15,15 @@ new shell — and it is remembered for next time.
 ~/code/terminal-enhancement  main ●                              6.0s
 ❯
 ```
+
+**path** — where you are, then where you type. Nothing else.
+
+```
+~/code/api-server ❯
+```
+
+Change `%~` to `%1~` in `zsh/themes/path.zsh` for just the directory name
+(`api-server ❯`), or add `$(_te_git)` after the path to bring the branch back.
 
 **compact** — one line, for narrow terminals and split panes.
 
@@ -66,7 +75,7 @@ between `1` and `127` is usually the whole diagnosis.
 ### Picking a color
 
 Every theme leans on one accent color, and `accent` changes it independently
-of the theme — so six shapes times any color you like.
+of the theme — so seven shapes times any color you like.
 
 ```sh
 accent list        # swatches, to pick by eye rather than by guessing a name
