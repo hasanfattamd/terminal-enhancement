@@ -138,6 +138,35 @@ Colors reference your terminal's own ANSI palette rather than fixed hex
 values, so the prompt adopts whatever scheme you already use instead of
 clashing with it.
 
+## Vertical spacing
+
+Two different things control how much room each command takes, and only one of
+them is in this repo.
+
+**Lines per prompt — this repo's part.** Most themes use one line. `path`,
+`minimal`, `info` and `rule` use two, because a blank line or a divider above
+the prompt is the point of those designs. If a session feels airy, switching
+to a one-line theme halves it:
+
+```sh
+theme plain        # the shortest: one line, nothing above it
+```
+
+**Line height — your terminal's part.** The space *within* and *between* text
+rows is a font setting in the terminal emulator. No shell prompt can change
+it, so if lines still feel far apart after switching themes, this is the knob:
+
+| terminal | where |
+|---|---|
+| VS Code | Settings → search `terminal.integrated.lineHeight` → try `1` |
+| iTerm2 | Settings → Profiles → Text → Line Spacing |
+| macOS Terminal | Settings → Profiles → Text → … → Line Spacing |
+| Alacritty | `font.offset.y` in `alacritty.toml` (negative tightens) |
+| Kitty | `adjust_line_height` in `kitty.conf` (e.g. `-1` or `90%`) |
+| GNOME Terminal | Preferences → Profile → Text → Cell spacing |
+
+A value of `1` (or `0` offset) is the tightest that still renders correctly.
+
 ## Install
 
 ```sh
