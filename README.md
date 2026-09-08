@@ -74,6 +74,11 @@ accent magenta     # a name...
 accent 141         # ...or any 256-color number
 ```
 
+To live with one for a while before committing to it, use `theme try <name>`.
+That applies to the current shell only and is deliberately not written to
+disk, so your other shells and your next session keep the theme you actually
+chose.
+
 Both `theme` and `accent` tab-complete, print the current setting when run
 with no arguments, and remember your choice in
 `~/.config/terminal-enhancement/`.

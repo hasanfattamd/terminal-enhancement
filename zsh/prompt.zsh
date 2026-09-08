@@ -223,11 +223,22 @@ theme() {
       print
       _te_load_theme $saved
       ;;
+    try|-t)
+      # Live with a theme for a while without committing to it. Applies to
+      # this shell only and is deliberately not written to disk, so other
+      # shells and your next session keep the theme you actually chose.
+      if [[ -z $2 ]]; then
+        print -u2 "theme try: needs a theme name. Available: $(_te_themes | paste -sd' ' -)"
+        return 1
+      fi
+      _te_load_theme $2 || return 1
+      ;;
     help|-h|--help)
-      print -- "theme            show the current theme"
-      print -- "theme list       list available themes"
-      print -- "theme preview    render every theme with your real state"
-      print -- "theme <name>     switch now and remember the choice"
+      print -- "theme             show the current theme"
+      print -- "theme list        list available themes"
+      print -- "theme preview     render every theme with your real state"
+      print -- "theme try <name>  use it in this shell only, do not remember it"
+      print -- "theme <name>      switch now and remember the choice"
       ;;
     *)
       _te_load_theme $cmd || return 1
@@ -281,7 +292,7 @@ accent() {
 # --- tab completion for both commands --------------------------------------
 _te_complete_theme() {
   local -a names
-  names=( $(_te_themes) list preview current help )
+  names=( $(_te_themes) list preview try current help )
   _describe 'theme' names
 }
 _te_complete_accent() {
