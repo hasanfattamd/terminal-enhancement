@@ -35,12 +35,22 @@ out of the way while you read output.
 you@laptop:~/code/terminal-enhancement (main●)$
 ```
 
-**blocks** — the powerline look, but built from background colors and padding
-rather than arrow glyphs, so it needs no Nerd Font and renders in any terminal.
-The prompt character sits at the right end of the blocks, on the same line.
+**blocks** — the powerline look: filled segments that taper to a point on the
+right. The cap is drawn in each segment's own color, so it reads as the block
+tapering off rather than as a character sitting after it.
 
 ```
-▐ ~/code/terminal-enhancement ▌▐ main ● ▌ ❯
+▐ ~/code/terminal-enhancement ▶▐ main ● ▶ ❯
+```
+
+The seamless powerline arrow is U+E0B0, which only exists in patched fonts. So
+the default cap is a plain Unicode triangle that renders in *any* font — the
+point is a little shorter than the block, but nothing shows up as a
+missing-glyph box. If you have a Nerd Font or Powerline font installed, put
+this in `~/.zshrc.local` for the exact full-height arrow:
+
+```sh
+TE_BLOCK_CAP=$'\ue0b0'
 ```
 
 **info** — the same shape as minimal, but it tells you more: the time each
@@ -143,6 +153,7 @@ Anything set in your environment overrides a remembered choice:
 TE_THEME=zen             # theme for this shell only
 TE_ACCENT=141            # accent for this shell only
 TE_PROMPT_CHAR='λ'       # the character you type after
+TE_BLOCK_CAP=$'\ue0b0'   # the pointed cap in the blocks theme
 TE_GIT_DIRTY=0           # skip the dirty check in very large repos
 TE_SLOW_SECONDS=10       # only report commands slower than this
 ```

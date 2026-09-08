@@ -31,6 +31,18 @@ setopt PROMPT_SUBST
 # The character you type after. Themes that use one read it from here.
 : ${TE_PROMPT_CHAR:=❯}
 
+# The pointed cap on a filled block, used by the `blocks` theme.
+#
+# The seamless powerline arrow is U+E0B0, which exists only in patched fonts
+# (Nerd Font, Powerline). If you have one installed, this gives the exact
+# shape, the point filling the full height of the block:
+#
+#   TE_BLOCK_CAP=$'\ue0b0'
+#
+# The default is a plain Unicode triangle that every font has. The point is a
+# little shorter than the block, but nothing renders as a missing-glyph box.
+: ${TE_BLOCK_CAP:=▶}
+
 # Scanning for uncommitted changes is the only part of the prompt that touches
 # the disk. Imperceptible in a normal repo, slow in one with hundreds of
 # thousands of files — set to 0 there.
@@ -64,8 +76,11 @@ _te_git_state() {
   _te_branch=''
   _te_dirty=''
   [[ -z $vcs_info_msg_0_ ]] && return
-  _te_branch=${vcs_info_msg_0_%%[*+]*}
-  [[ $vcs_info_msg_0_ != $_te_branch ]] && _te_dirty=1
+  local raw=${vcs_info_msg_0_%%[*+]*}
+  [[ $vcs_info_msg_0_ != $raw ]] && _te_dirty=1
+  # A branch name may legally contain '%', which would otherwise be read as a
+  # prompt escape when the formatters below are expanded. Doubling it escapes it.
+  _te_branch=${raw//\%/%%}
 }
 
 # --- command timing --------------------------------------------------------
@@ -122,10 +137,24 @@ _te_git_paren() {
   print -n " %F{8}(${_te_branch}${_te_dirty:+●})%f"
 }
 
-# A filled segment, for themes built out of blocks.
+# A filled segment ending in a point — the powerline shape.
+#
+# The trick is that the cap is not part of the fill. It is printed as a
+# foreground glyph in the block's own color against the default background, so
+# it reads as the block tapering off rather than as a separate character.
+#
+#   _te_block <background> <foreground> <text>
+#
+# The text is emitted rather than printed, so prompt escapes inside it (%~ and
+# friends) are still expanded afterwards by zsh.
+_te_block() {
+  print -n "%K{$1}%F{$2} $3 %f%k%F{$1}${TE_BLOCK_CAP}%f"
+}
+
+# The git segment as a capped block, for themes built out of them.
 _te_git_block() {
   [[ -z $_te_branch ]] && return
-  print -n "%K{8}%F{white} ${_te_branch}${_te_dirty:+ ●} %f%k"
+  _te_block 8 white "${_te_branch}${_te_dirty:+ ●}"
 }
 
 # ` (venv)` — the active Python environment, if any.
