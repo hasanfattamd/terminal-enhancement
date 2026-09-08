@@ -3,7 +3,7 @@
 A clean, minimal zsh setup. No frameworks, no plugin manager, no external
 binaries — just zsh's own features, so it starts fast and there is nothing to
 keep updated.
-## Seven looks, switchable live
+## Twelve looks, switchable live
 
 Run `theme preview` to see them all rendered with your own directory and
 branch, then `theme <name>` to switch. The change is instant — no reload, no
@@ -28,10 +28,19 @@ command and its output reads as its own block rather than one continuous wall.
 The chevron uses a sage/rose pair instead of terminal green and red: still
 unmistakably different, without shouting between every command.
 
-The theme file carries four complete alternatives as comments — a left accent
-rule, a diamond, a plain indent, and the same thing without the blank line —
-so changing the treatment is swapping one line. Pair any of them with
-`accent 110` or `accent 108` for a fully desaturated look.
+Five more themes are the same shape with a different treatment, so you can
+switch between them rather than edit anything:
+
+| | |
+|---|---|
+| `bar` | `▍Desktop ❯` — a thin accent rule; identity without spending a line |
+| `dot` | `◆ Desktop ❯` — the same idea, more decorative |
+| `indent` | whitespace only, no marks at all — the quietest of the set |
+| `pill` | the name in a single filled block |
+| `rule` | a dim divider the width of the window above each prompt |
+
+Pair any of them with `accent 110` or `accent 108` for a fully desaturated
+look.
 
 **compact** — one line, for narrow terminals and split panes.
 
@@ -83,7 +92,7 @@ between `1` and `127` is usually the whole diagnosis.
 ### Picking a color
 
 Every theme leans on one accent color, and `accent` changes it independently
-of the theme — so seven shapes times any color you like.
+of the theme — so twelve looks times any color you like.
 
 ```sh
 accent list        # swatches, to pick by eye rather than by guessing a name
