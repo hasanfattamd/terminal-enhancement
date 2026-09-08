@@ -42,6 +42,22 @@ switch between them rather than edit anything:
 Pair any of them with `accent 110` or `accent 108` for a fully desaturated
 look.
 
+### Picking the prompt character
+
+`❯` is not fixed either. `char list` renders the candidates in place, in your
+own terminal and font, which is the only way to judge one:
+
+```sh
+char list          # see them all
+char '›'           # lighter and thinner than the default
+char '·'           # the quietest of them
+char '$'           # the shell classic
+```
+
+Twelve are offered — `❯ › » → ▸ ‣ · • λ $ % >` — all ordinary Unicode that
+renders in any font, no Nerd Font needed. Any other character works too; pass
+it and it is remembered. `char` on its own prints the current one.
+
 **compact** — one line, for narrow terminals and split panes.
 
 ```

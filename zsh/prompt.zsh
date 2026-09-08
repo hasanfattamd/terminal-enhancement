@@ -28,8 +28,16 @@ setopt PROMPT_SUBST
 [[ -z $TE_ACCENT && -r $TE_STATE_DIR/accent ]] && TE_ACCENT=$(<$TE_STATE_DIR/accent)
 : ${TE_ACCENT:=blue}
 
-# The character you type after. Themes that use one read it from here.
+# The character you type after. Themes that use one read it from here, and
+# `char <c>` sets it. Same precedence as the accent: environment, then the
+# remembered choice, then the default.
+[[ -z $TE_PROMPT_CHAR && -r $TE_STATE_DIR/char ]] && TE_PROMPT_CHAR=$(<$TE_STATE_DIR/char)
 : ${TE_PROMPT_CHAR:=❯}
+# '%' is itself a prompt escape, so a literal one has to be doubled before it
+# reaches a PROMPT string — otherwise `char %` swallows the next character and
+# prints nothing. Doing it here covers all three sources: the environment, the
+# remembered choice, and the default.
+TE_PROMPT_CHAR=${TE_PROMPT_CHAR//\%/%%}
 
 # The pointed cap on a filled block, used by the `blocks` theme.
 #
@@ -289,6 +297,47 @@ accent() {
   esac
 }
 
+# ---------------------------------------------------------------------------
+# Prompt character
+#
+# The third axis. Themes reference $TE_PROMPT_CHAR at render time, so a change
+# shows up on the very next prompt.
+# ---------------------------------------------------------------------------
+
+# Candidates that exist in ordinary fonts — no Nerd Font, no patched font.
+typeset -ga _te_chars=( '❯' '›' '»' '→' '▸' '‣' '·' '•' 'λ' '$' '%' '>' )
+
+char() {
+  local arg=${1:-current}
+  case $arg in
+    current|'')
+      # Report what was asked for, not the doubled form stored for the prompt.
+      print -- ${TE_PROMPT_CHAR//\%\%/%}
+      ;;
+    list|-l)
+      # Render each one in place rather than just naming it — the only way to
+      # judge a prompt character is to see it where it will sit.
+      local c e
+      for c in $_te_chars; do
+        e=${c//\%/%%}
+        print -Pn -- "  %F{$TE_ACCENT}Desktop%f %F{108}${e}%f"
+        print -Pn -- "      %F{8}${e}%f"
+        print
+      done
+      ;;
+    help|-h|--help)
+      print -- "char           show the current prompt character"
+      print -- "char list      render the candidates in place"
+      print -- "char <c>       set it now and remember the choice"
+      ;;
+    *)
+      TE_PROMPT_CHAR=${arg//\%/%%}
+      # Store the raw character; it is escaped again on load.
+      mkdir -p $TE_STATE_DIR && print -- $arg >| $TE_STATE_DIR/char
+      ;;
+  esac
+}
+
 # --- tab completion for both commands --------------------------------------
 _te_complete_theme() {
   local -a names
@@ -300,9 +349,15 @@ _te_complete_accent() {
   names=( red green yellow blue magenta cyan white list current help )
   _describe 'accent' names
 }
+_te_complete_char() {
+  local -a names
+  names=( $_te_chars list current help )
+  _describe 'char' names
+}
 if (( $+functions[compdef] )); then
   compdef _te_complete_theme theme
   compdef _te_complete_accent accent
+  compdef _te_complete_char char
 fi
 
 # Pick the theme for this shell: an explicit TE_THEME wins, then a remembered
