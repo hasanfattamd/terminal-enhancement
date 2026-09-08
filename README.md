@@ -19,11 +19,12 @@ new shell — and it is remembered for next time.
 **path** — where you are, then where you type. Nothing else.
 
 ```
-~/code/api-server ❯
+Desktop ❯
 ```
 
-Change `%~` to `%1~` in `zsh/themes/path.zsh` for just the directory name
-(`api-server ❯`), or add `$(_te_git)` after the path to bring the branch back.
+Just the current directory's name. Change `%1~` to `%~` in
+`zsh/themes/path.zsh` for the full home-relative path (`~/code/api-server ❯`),
+or add `$(_te_git)` after the name to bring the branch back.
 
 **compact** — one line, for narrow terminals and split panes.
 
