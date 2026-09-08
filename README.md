@@ -19,12 +19,19 @@ new shell — and it is remembered for next time.
 **path** — where you are, then where you type. Nothing else.
 
 ```
+
 Desktop ❯
 ```
 
-Just the current directory's name. Change `%1~` to `%~` in
-`zsh/themes/path.zsh` for the full home-relative path (`~/code/api-server ❯`),
-or add `$(_te_git)` after the name to bring the branch back.
+Just the current directory's name, in bold, after a blank line — so each
+command and its output reads as its own block rather than one continuous wall.
+The chevron uses a sage/rose pair instead of terminal green and red: still
+unmistakably different, without shouting between every command.
+
+The theme file carries four complete alternatives as comments — a left accent
+rule, a diamond, a plain indent, and the same thing without the blank line —
+so changing the treatment is swapping one line. Pair any of them with
+`accent 110` or `accent 108` for a fully desaturated look.
 
 **compact** — one line, for narrow terminals and split panes.
 
