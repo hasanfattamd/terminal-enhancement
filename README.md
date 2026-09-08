@@ -37,10 +37,10 @@ you@laptop:~/code/terminal-enhancement (main●)$
 
 **blocks** — the powerline look, but built from background colors and padding
 rather than arrow glyphs, so it needs no Nerd Font and renders in any terminal.
+The prompt character sits at the right end of the blocks, on the same line.
 
 ```
-▐ ~/code/terminal-enhancement ▌▐ main ● ▌
-❯
+▐ ~/code/terminal-enhancement ▌▐ main ● ▌ ❯
 ```
 
 **info** — the same shape as minimal, but it tells you more: the time each
