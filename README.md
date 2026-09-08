@@ -3,23 +3,81 @@
 A clean, minimal zsh setup. No frameworks, no plugin manager, no external
 binaries — just zsh's own features, so it starts fast and there is nothing to
 keep updated.
+## Six looks, switchable live
+
+Run `theme preview` to see them all rendered with your own directory and
+branch, then `theme <name>` to switch. The change is instant — no reload, no
+new shell — and it is remembered for next time.
+
+**minimal** *(default)* — two lines, so a long path never squeezes what you type.
 
 ```
-~/code/terminal-enhancement  main ●                                      6.0s
-❯ git commit
+~/code/terminal-enhancement  main ●                              6.0s
+❯
 ```
 
-**Line one** tells you where you are: the directory, the git branch (dimmed,
-because you usually already know it), and a dot when the working tree is
-dirty. On the right, how long the last command took — but only when it took
-long enough to matter.
+**compact** — one line, for narrow terminals and split panes.
 
-**Line two** is just the character you type after. It is green normally and
-**red when the last command failed**, so a failure is visible even when the
-output above scrolled past.
+```
+terminal-enhancement main ● ❯
+```
 
-Colors come from your terminal's own 16-color ANSI palette rather than fixed
-hex values, so the prompt adopts whatever scheme you already use instead of
+**zen** — the quietest. Everything informational moves right, dimmed, and gets
+out of the way while you read output.
+
+```
+❯                                    ~/code/terminal-enhancement main●
+```
+
+**classic** — the familiar bash shape, with git added and the noise removed.
+
+```
+you@laptop:~/code/terminal-enhancement (main●)$
+```
+
+**blocks** — the powerline look, but built from background colors and padding
+rather than arrow glyphs, so it needs no Nerd Font and renders in any terminal.
+
+```
+▐ ~/code/terminal-enhancement ▌▐ main ● ▌
+❯
+```
+
+**info** — the same shape as minimal, but it tells you more: the time each
+command started (useful when scrolling back through a long session), a
+background job count, and the actual exit code on failure. The difference
+between `1` and `127` is usually the whole diagnosis.
+
+```
+14:32:07 ~/code/terminal-enhancement  main ● (venv) 2&
+127 ❯
+```
+
+### Picking a color
+
+Every theme leans on one accent color, and `accent` changes it independently
+of the theme — so six shapes times any color you like.
+
+```sh
+accent list        # swatches, to pick by eye rather than by guessing a name
+accent magenta     # a name...
+accent 141         # ...or any 256-color number
+```
+
+Both `theme` and `accent` tab-complete, print the current setting when run
+with no arguments, and remember your choice in
+`~/.config/terminal-enhancement/`.
+
+### What every theme shows
+
+The prompt character turns **red when the last command failed**, so a failure
+stays visible after its output has scrolled away. A dot appears next to the
+branch when the working tree is dirty. Command duration appears only past a
+threshold — a prompt that reports "0s" on every line is noise, not
+information.
+
+Colors reference your terminal's own ANSI palette rather than fixed hex
+values, so the prompt adopts whatever scheme you already use instead of
 clashing with it.
 
 ## Install
@@ -45,14 +103,16 @@ exec zsh
 
 | File | |
 |---|---|
-| `zsh/prompt.zsh` | the two-line prompt, git status, command timer |
+| `zsh/prompt.zsh` | the prompt engine: git state, timing, `theme` and `accent` |
+| `zsh/themes/*.zsh` | one short file per look — copy one to make your own |
 | `zsh/options.zsh` | history, completion, key bindings, `cd` behaviour |
 | `zsh/colors.zsh` | `ls`, `grep`, `less` and man-page coloring |
 | `zsh/aliases.zsh` | a deliberately short list of daily shortcuts |
-| `zshrc` | loads the four files above |
+| `zshrc` | loads the files above |
 
 Each file is commented with *why*, not just what, so it is meant to be edited
-rather than treated as a black box.
+rather than treated as a black box. A theme is about six lines; the quickest
+way to your own look is to copy the closest one and change it.
 
 ### Beyond the prompt
 
@@ -77,11 +137,14 @@ The parts you will notice within a day of using it:
 Put anything machine-specific in `~/.zshrc.local` — `PATH` entries, work
 aliases, tokens. It is sourced last and this repo never touches it.
 
-Two knobs, set before the prompt loads:
+Anything set in your environment overrides a remembered choice:
 
 ```sh
-MINIMAL_PROMPT_GIT_DIRTY=0      # skip the dirty check in very large repos
-MINIMAL_PROMPT_SLOW_SECONDS=10  # only time commands slower than this
+TE_THEME=zen             # theme for this shell only
+TE_ACCENT=141            # accent for this shell only
+TE_PROMPT_CHAR='λ'       # the character you type after
+TE_GIT_DIRTY=0           # skip the dirty check in very large repos
+TE_SLOW_SECONDS=10       # only report commands slower than this
 ```
 
 The dirty-tree check is the only part of the prompt that touches the disk. It
@@ -96,9 +159,9 @@ Measured on Linux with zsh 5.9, median of 10 interactive startups:
 |---|---|
 | `zsh -f`, no config at all | 2 ms |
 | an empty `~/.zshrc` | 22 ms |
-| **this config** | **39 ms** |
+| **this config** | **37 ms** |
 
-About 17 ms of that is ours. The completion cache is rebuilt once a day rather
+About 16 ms of that is ours. The completion cache is rebuilt once a day rather
 than on every shell, which is what usually makes zsh feel slow to start.
 
 ## Requirements
